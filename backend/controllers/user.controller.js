@@ -2,12 +2,15 @@ import { compare } from "bcrypt";
 import { User } from "../models/user.model.js";
 import {
   AsyncHandler,
+  emitEvent,
   ErrorHandler,
   sendToken,
   uploadFilesToCloudinary,
 } from "../utils/utils.js";
 import { Chat } from "../models/chat.model.js";
 import { Request } from "../models/request.model.js";
+import { NEW_REQUEST, REFETCH_CHATS } from "../constants/events.js";
+import { getOtherMember } from "./chat.controller.js";
 
 const newUser = AsyncHandler(async (req, res, next) => {
   const { name, username, password } = req.body;
@@ -50,7 +53,7 @@ const login = AsyncHandler(async (req, res, next) => {
 const logout = AsyncHandler(async (req, res, next) => {
   return res
     .status(200)
-    .cookie("chat-token", "", { ...cookieOptions, maxAge: 0 })
+    .cookie("chat-token", "", { httpOnly: true, secure: true, maxAge: 0 })
     .json({
       success: true,
       message: "Logged Out Successfully!",
@@ -107,7 +110,7 @@ const sendFriendRequest = AsyncHandler(async (req, res, next) => {
     receiver: userId,
   });
 
-  // emitEvent(req, NEW_REQUEST, [userId]);
+  emitEvent(req, NEW_REQUEST, [userId]);
 
   return res.status(200).json({
     success: true,
@@ -148,7 +151,7 @@ const acceptFriendRequest = AsyncHandler(async (req, res, next) => {
     request.deleteOne(),
   ]);
 
-  // emitEvent(req, REFETCH_CHATS, members);
+  emitEvent(req, REFETCH_CHATS, members);
 
   return res.status(200).json({
     success: true,
@@ -216,6 +219,63 @@ const getMyFriends = AsyncHandler(async (req, res) => {
   }
 });
 
+const updateProfile = AsyncHandler(async (req, res, next) => {
+  const { name, username } = req.body;
+
+  // Validation
+  if (!name || !username) {
+    return next(new ErrorHandler("Name and username are required", 400));
+  }
+
+  if (name.length < 3) {
+    return next(
+      new ErrorHandler("Name must be at least 3 characters long", 400)
+    );
+  }
+
+  if (username.length < 3) {
+    return next(
+      new ErrorHandler("Username must be at least 3 characters long", 400)
+    );
+  }
+
+  // Check if username is taken (excluding current user)
+  const existingUser = await User.findOne({
+    username,
+    _id: { $ne: req.user._id },
+  });
+
+  if (existingUser) {
+    return next(new ErrorHandler("Username is already taken", 400));
+  }
+
+  // Update user
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        name,
+        username,
+      },
+    },
+    { new: true, select: "-password" }
+  );
+
+  // Emit event to refetch user data
+  emitEvent(req, REFETCH_CHATS, [req.user._id]);
+
+  return res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+    user: {
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      username: updatedUser.username,
+      avatar: updatedUser.avatar,
+    },
+  });
+});
+
 export {
   newUser,
   login,
@@ -226,4 +286,5 @@ export {
   acceptFriendRequest,
   getMyNotifications,
   getMyFriends,
+  updateProfile
 };

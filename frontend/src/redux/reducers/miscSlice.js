@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isMobile: false,
   isSearch: false,
+  isNotification: false,
+  isNewGroup: false,
 };
 
 const miscSlice = createSlice({
@@ -15,8 +17,15 @@ const miscSlice = createSlice({
     setIsSearch: (state, action) => {
       state.isSearch = action.payload;
     },
+    setIsNotification: (state, action) => {
+      state.isNotification = action.payload;
+    },
+    setIsNewGroup: (state, action) => {
+      state.isNewGroup = action.payload;
+    },
   },
 });
 
 export default miscSlice;
-export const { setIsMobile, setIsSearch } = miscSlice.actions;
+export const { setIsMobile, setIsSearch, setIsNotification, setIsNewGroup } =
+  miscSlice.actions;

@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { v4 as uuid } from "uuid";
 import jwt from "jsonwebtoken";
 import multer from "multer";
-
+import { userSocketIDs } from "../index.js";
 export const cookieOptions = {
   httpOnly: true,
   secure: true,
@@ -72,3 +72,22 @@ export const multerUpload = multer({
     fileSize: 5 * 1024 * 1024,
   },
 });
+
+export const getSockets = (users = []) => {
+  let sockets = [];
+
+  users.forEach((user) => {
+    const userId = user.toString();
+    const socketId = userSocketIDs.get(userId);
+
+    sockets.push(socketId);
+  });
+
+  return sockets;
+};
+
+export const emitEvent = (req, event, users, data) => {
+  const io = req.app.get("io");
+  const usersSocket = getSockets(users);
+  io.to(usersSocket).emit(event, data);
+};

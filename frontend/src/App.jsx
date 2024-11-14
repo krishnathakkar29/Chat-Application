@@ -14,6 +14,7 @@ import { LayoutLoader } from "./components/layout/Loader";
 import Header from "./components/layout/Header";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
+import { SocketProvider } from "./socket/Socket";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,7 +39,13 @@ function App() {
       <BrowserRouter>
         <Suspense>
           <Routes>
-            <Route element={<ProtectRoute user={user} />}>
+            <Route
+              element={
+                <SocketProvider>
+                  <ProtectRoute user={user} />
+                </SocketProvider>
+              }
+            >
               <Route path="/" element={<Home />} />
               <Route path="/chat/:chatId" element={<Chat />} />
             </Route>

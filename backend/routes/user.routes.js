@@ -9,6 +9,7 @@ import {
   newUser,
   searchUser,
   sendFriendRequest,
+  updateProfile,
 } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
 import { multerUpload } from "../utils/utils.js";
@@ -28,4 +29,7 @@ app.put("/acceptrequest", acceptFriendRequest);
 
 app.get("/notifications", getMyNotifications);
 app.get("/friends", getMyFriends);
+
+app.put("/update-profile", updateProfile);
+
 export default app;
