@@ -10,7 +10,6 @@ function AppLayout({ children, user, chatId }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 h-[calc(100vh-4rem)]">
         <div className="hidden sm:block sm:col-span-1 md:col-span-1 h-full">
           {/* <ChatList chatId={chatId} user={user} /> */}
-          hkehhphdsh
         </div>
 
         <div className="col-span-1 sm:col-span-2 md:col-span-2 h-full">

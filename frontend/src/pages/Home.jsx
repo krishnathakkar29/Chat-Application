@@ -1,6 +1,7 @@
 import AppLayout from "@/components/layout/AppLayout";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useLocation, useParams } from "react-router-dom";
 
 function Home() {
   const { user } = useSelector((state) => state.auth);

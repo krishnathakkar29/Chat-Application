@@ -66,11 +66,11 @@ function Header() {
             icon={<PlusIcon />}
             onClick={openNewGroup}
           />
-          <HeaderOption
+          {/* <HeaderOption
             text={"Groups"}
             icon={<GroupIcon />}
             onClick={navigateToGroups}
-          />
+          /> */}
           <HeaderOption
             text={"Notifications"}
             icon={<BellIcon />}
