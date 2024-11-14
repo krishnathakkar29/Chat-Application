@@ -1,11 +1,13 @@
-import express from "express";
-import "dotenv/config";
-import cors from "cors";
-import { errorMiddleware } from "./middleware/error.middleware.js";
-import { connectDB } from "./utils/db.js";
-import cookieParser from "cookie-parser";
-import userRouter from "./routes/user.route.js";
 import { v2 as cloudinary } from "cloudinary";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import "dotenv/config";
+import express from "express";
+import { errorMiddleware } from "./middleware/error.middleware.js";
+import userRouter from "./routes/user.routes.js";
+import chatRouter from "./routes/chat.routes.js";
+import { connectDB } from "./utils/db.js";
+import { createUser } from "./seeders/user.js";
 
 const app = express();
 
@@ -30,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/chat", chatRouter);
 
 app.use(errorMiddleware);
 

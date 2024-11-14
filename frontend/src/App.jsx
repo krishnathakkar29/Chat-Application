@@ -11,6 +11,8 @@ import axios from "axios";
 import { server } from "./config";
 import { userExists, userNotExists } from "./redux/reducers/authSlice";
 import { LayoutLoader } from "./components/layout/Loader";
+import Header from "./components/layout/Header";
+import Home from "./pages/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,7 +38,7 @@ function App() {
         <Suspense>
           <Routes>
             <Route element={<ProtectRoute user={user} />}>
-              <Route path="/" element={<div>Home it is.......</div>} />
+              <Route path="/" element={<Home />} />
             </Route>
             <Route
               path="/login"
