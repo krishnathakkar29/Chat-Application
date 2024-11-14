@@ -45,7 +45,7 @@ function Search({ isOpen, onOpenChange }) {
             className="flex-grow border-none outline-none w-full rounded-md text-gray-700 p-1 text-xl"
             placeholder="Search"
             value={search}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <div className="h-[40vh]">

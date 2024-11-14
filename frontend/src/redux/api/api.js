@@ -23,8 +23,19 @@ const api = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    myChats: builder.query({
+      query: () => ({
+        url: "chat/my",
+        credentials: "include",
+      }),
+      providesTags: ["Chat"],
+    }),
   }),
 });
 
 export default api;
-export const { useLazySearchUserQuery, useSendFriendRequestMutation } = api;
+export const {
+  useLazySearchUserQuery,
+  useSendFriendRequestMutation,
+  useMyChatsQuery,
+} = api;
