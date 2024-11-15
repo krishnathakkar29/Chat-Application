@@ -14,7 +14,9 @@ const TypingLoader = () => {
     <Stack
       spacing={"0.5rem"}
       direction={"row"}
-      padding={"0.5rem"}
+      padding={"1rem"}
+      mt={"1rem"}
+      mb={"0.5rem"}
       justifyContent={"center"}
     >
       <BouncingSkeleton
