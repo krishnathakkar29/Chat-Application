@@ -30,7 +30,7 @@ import NotificationDialog from "../specific/NotificationDialog";
 import NewGroupDialog from "../specific/NewGroupDialog";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { userNotExists } from "@/redux/reducers/authSlice";
+import { userExists, userNotExists } from "@/redux/reducers/authSlice";
 import { server } from "@/config";
 import {
   Drawer,
@@ -46,16 +46,17 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../ui/input";
 
-function Header() {
+function Header({ refetch }) {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
   const [loading, setLoading] = useState(false);
   const [newUser, setNewUser] = useState({
-    name: "John Doe",
-    username: "johndoe",
-    avatar: "https://github.com/shadcn.png",
+    name: user.name,
+    username: user.username,
+    avatar: user.avatar.url,
   });
 
-  const { user } = useSelector((state) => state.auth);
   const { isSearch, isNotification, isNewGroup } = useSelector(
     (state) => state.misc
   );
@@ -100,34 +101,6 @@ function Header() {
     }
   };
 
-  const profileUpdate = async () => {
-    const toastId = toast.loading("Logging In...");
-    setLoading(true);
-
-    try {
-      const { data } = await axios.put(`${server}/api/v1/user/update-profile`, {
-        name: newUser.username,
-        username: newUser.username,
-      });
-
-      toast.success(data?.message, {
-        id: toastId,
-      });
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message || "Something Went Wrong", {
-        id: toastId,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUserUpdate = (field, value) => {
-    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
-  };
-
-  console.log(user.avatar);
   return (
     <>
       <header className="flex items-center justify-between h-16 bg-gray-900 text-white px-4 md:px-6">
@@ -178,7 +151,7 @@ function Header() {
             onClick={logoutHandler}
           />
 
-          <Drawer>
+          {/* <Drawer>
             <DrawerTrigger asChild>
               <Button
                 variant="ghost"
@@ -191,12 +164,9 @@ function Header() {
             <DrawerContent>
               <div className="mx-auto w-full max-w-sm">
                 <DrawerHeader>
-                  <DrawerTitle>Edit Profile</DrawerTitle>
-                  <DrawerDescription>
-                    Make changes to your profile here.
-                  </DrawerDescription>
+                  <DrawerTitle>Your Profile</DrawerTitle>
                 </DrawerHeader>
-                <div className="p-4 pb-0">
+                <div className="p-4 pb-8">
                   <div className="flex items-center justify-center mb-4">
                     <Avatar className="h-24 w-24">
                       <AvatarImage src={user.avatar.url} alt={user.name} />
@@ -205,33 +175,69 @@ function Header() {
                   </div>
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        value={newUser.name}
-                        onChange={(e) =>
-                          handleUserUpdate("name", e.target.value)
-                        }
-                      />
+                      <h2>{user.name}</h2>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="username">Username</Label>
-                      <Input
-                        id="username"
-                        value={newUser.username}
-                        onChange={(e) =>
-                          handleUserUpdate("username", e.target.value)
-                        }
-                      />
+                      <h2 className="text-center text-muted-primary text-xl ">{user.username}</h2>
                     </div>
                   </div>
                 </div>
-                <DrawerFooter>
-                  <Button>Save changes</Button>
-                  <DrawerClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DrawerClose>
-                </DrawerFooter>
+              </div>
+            </DrawerContent>
+          </Drawer> */}
+
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-gray-400 hover:bg-white hover:text-gray-800 transition-colors duration-200"
+              >
+                <UserIcon className="h-5 w-5" />
+              </Button>
+            </DrawerTrigger>
+
+            <DrawerContent>
+              <div className="mx-auto w-full max-w-sm">
+                <DrawerHeader className="text-center">
+                  <DrawerTitle className="text-2xl font-semibold">
+                    Your Profile
+                  </DrawerTitle>
+                </DrawerHeader>
+
+                <div className="p-4 pb-8">
+                  <div className="flex items-center justify-center mb-6">
+                    <Avatar className="h-24 w-24 ring-2 ring-offset-2 ring-gray-200">
+                      <AvatarImage
+                        src={user.avatar.url}
+                        alt={user.name}
+                        className="object-cover"
+                      />
+                      <AvatarFallback className="text-xl">
+                        {user.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <label className="text-sm text-gray-500 block mb-1">
+                        Full Name
+                      </label>
+                      <h2 className="text-2xl font-bold text-gray-900">
+                        {user.name}
+                      </h2>
+                    </div>
+                    <div className="text-center">
+                      <label className="text-sm text-gray-500 block mb-1">
+                        Username
+                      </label>
+                      <h2 className="text-xl text-gray-600">
+                        @{user.username}
+                      </h2>
+                    </div>
+                  </div>
+                </div>
               </div>
             </DrawerContent>
           </Drawer>

@@ -221,7 +221,7 @@ const getMyFriends = AsyncHandler(async (req, res) => {
 
 const updateProfile = AsyncHandler(async (req, res, next) => {
   const { name, username } = req.body;
-
+  console.log(name, username);
   // Validation
   if (!name || !username) {
     return next(new ErrorHandler("Name and username are required", 400));
@@ -242,8 +242,10 @@ const updateProfile = AsyncHandler(async (req, res, next) => {
   // Check if username is taken (excluding current user)
   const existingUser = await User.findOne({
     username,
-    _id: { $ne: req.user._id },
+    _id: { $ne: req.user },
   });
+
+  console.log(existingUser);
 
   if (existingUser) {
     return next(new ErrorHandler("Username is already taken", 400));
@@ -261,18 +263,14 @@ const updateProfile = AsyncHandler(async (req, res, next) => {
     { new: true, select: "-password" }
   );
 
+  console.log(updatedUser);
   // Emit event to refetch user data
   emitEvent(req, REFETCH_CHATS, [req.user._id]);
 
   return res.status(200).json({
     success: true,
     message: "Profile updated successfully",
-    user: {
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      username: updatedUser.username,
-      avatar: updatedUser.avatar,
-    },
+    user: updatedUser,
   });
 });
 
@@ -286,5 +284,5 @@ export {
   acceptFriendRequest,
   getMyNotifications,
   getMyFriends,
-  updateProfile
+  updateProfile,
 };

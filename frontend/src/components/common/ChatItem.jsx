@@ -2,6 +2,8 @@ import { Stack, Typography } from "@mui/material";
 import { memo } from "react";
 import { Link } from "../styles/StyledComponents";
 import AvatarCard from "./AvatarCard";
+import { useSelector } from "react-redux";
+import { TypingLoader } from "../layout/Loader";
 const ChatItem = ({
   avatar = [],
   name,

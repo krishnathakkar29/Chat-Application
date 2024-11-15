@@ -49,7 +49,7 @@ function AppLayout({ children, user, chatId }) {
   useErrors([{ isError, error }]);
   return (
     <>
-      <Header />
+      <Header refetch={refetch} />
 
       {isLoading ? (
         <Skeleton />
@@ -88,25 +88,10 @@ function AppLayout({ children, user, chatId }) {
               />
             </>
           )}
-          {/* <ChatList chatId={chatId} user={user} /> */}
         </Grid>
 
-        <Grid item xs={12} sm={8} md={5} lg={6} height={"100%"}>
+        <Grid item xs={12} sm={8} md={9} lg={9} height={"100%"}>
           {children}
-        </Grid>
-
-        <Grid
-          item
-          md={4}
-          lg={3}
-          height={"100%"}
-          sx={{
-            display: { xs: "none", md: "block" },
-            padding: "2rem",
-            bgcolor: "rgba(0,0,0,0.85)",
-          }}
-        >
-          <ProfileCard user={user} />
         </Grid>
       </Grid>
     </>
