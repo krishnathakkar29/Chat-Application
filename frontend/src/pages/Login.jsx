@@ -25,7 +25,7 @@ function Login() {
 
     try {
       const { data } = await axios.post(
-        `${server}/api/v1/user/login`,
+        `https://api-chat-application.onrender.com//api/v1/user/login`,
         {
           username: username,
           password: password,
@@ -65,7 +65,7 @@ function Login() {
     formData.append("password", password);
 
     try {
-      const { data } = await axios.post(`${server}/api/v1/user/new`, formData, {
+      const { data } = await axios.post(`https://api-chat-application.onrender.com/api/v1/user/new`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
