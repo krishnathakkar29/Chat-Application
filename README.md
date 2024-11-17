@@ -1,5 +1,11 @@
 # 🚀 Real-time Chat Application
 
+##Watch the video preview
+
+[![Watch the video](https://img.youtube.com/vi/KWu67XO76wY/hqdefault.jpg)](https://youtu.be/KWu67XO76wY)
+
+
+
 ## Some Features
 - 🔐 Authentication & Authorization with JWT and Protected Routes
 - ⚡Real-time typing indicators with auto-scroll
