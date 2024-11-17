@@ -56,6 +56,21 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/health", (req, res, next) => {
+  try {
+    return res.status(200).json({
+      status: true,
+      health: "ok",
+    });
+  } catch (error) {
+    console.log("Error in health route: ", error);
+    return res.json({
+      success: false,
+      message: "failed",
+    });
+  }
+});
+
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/chat", chatRouter);
 
@@ -125,4 +140,4 @@ server.listen(port, () => {
   console.log(`server is listening on port ${port}`);
 });
 
-export {userSocketIDs}
+export { userSocketIDs };
