@@ -1,20 +1,18 @@
-import { Suspense, useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectRoute from "./components/auth/ProtectRoute";
-import Login from "./pages/Login";
+import axios from "axios";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { server } from "./config";
-import { userExists, userNotExists } from "./redux/reducers/authSlice";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import ProtectRoute from "./components/auth/ProtectRoute";
 import { LayoutLoader } from "./components/layout/Loader";
-import Header from "./components/layout/Header";
-import Home from "./pages/Home";
-import Chat from "./pages/Chat";
+import { server } from "./config";
+import Login from "./pages/Login";
+import { userExists, userNotExists } from "./redux/reducers/authSlice";
 import { SocketProvider } from "./socket/Socket";
+
+const Home = lazy(() => import("./pages/Home"));
+const Chat = lazy(() => import("./pages/Chat"));
 
 function App() {
   const dispatch = useDispatch();

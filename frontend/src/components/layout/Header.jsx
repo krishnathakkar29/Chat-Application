@@ -1,51 +1,45 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  BellIcon,
-  GroupIcon,
-  LogOut,
-  MenuIcon,
-  MessageCircleIcon,
-  PlusIcon,
-  SearchIcon,
-  User,
-  UserIcon,
-} from "lucide-react";
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "../ui/button";
-import { useDispatch, useSelector } from "react-redux";
+import { server } from "@/config";
+import { userNotExists } from "@/redux/reducers/authSlice";
+import { resetNotificationCount } from "@/redux/reducers/chatSlice";
 import {
   setIsMobile,
   setIsNewGroup,
   setIsNotification,
   setIsSearch,
 } from "@/redux/reducers/miscSlice";
-import { Suspense, useState } from "react";
-import Search from "../specific/Search";
-import { resetNotificationCount } from "@/redux/reducers/chatSlice";
 import { Backdrop } from "@mui/material";
-import NotificationDialog from "../specific/NotificationDialog";
-import NewGroupDialog from "../specific/NewGroupDialog";
 import axios from "axios";
-import toast from "react-hot-toast";
-import { userExists, userNotExists } from "@/redux/reducers/authSlice";
-import { server } from "@/config";
 import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerClose,
-} from "@/components/ui/drawer";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "../ui/input";
+  BellIcon,
+  LogOut,
+  MenuIcon,
+  MessageCircleIcon,
+  PlusIcon,
+  SearchIcon,
+  UserIcon,
+} from "lucide-react";
+import { lazy, Suspense, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "../ui/button";
+
+const Search = lazy(() => import("../specific/Search"));
+const NewGroupDialog = lazy(() => import("../specific/NewGroupDialog"));
+const NotificationDialog = lazy(() => import("../specific/NotificationDialog"));
 
 function Header({ refetch }) {
   const dispatch = useDispatch();
