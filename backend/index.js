@@ -27,7 +27,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     credentials: true,
-    origin: "*",
+    origin: ["http://localhost:5173", "https://client-chat-application.vercel.app","https://client-chat-application.netlify.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -49,7 +49,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "*",
+    origin: ["http://localhost:5173", "https://client-chat-application.vercel.app","https://client-chat-application.netlify.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
