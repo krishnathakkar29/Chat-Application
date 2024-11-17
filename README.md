@@ -16,6 +16,72 @@
 - 🐛 Comprehensive error handling (client & server)
 - ⏳ And much more!
 
-  ## Installation
+## Tech Stack
+![My Skills](https://skillicons.dev/icons?i=react,tailwind,mongodb,nodejs,express,redux)
+
+- Frontend: React
+- Backend Framework: Expressjs
+- Database: MongoDB
+- State Management: Redux Toolkit
+
+## Environment Variables
+
+### Backend env file
+- Create a .env file in the backend folder and add the following .env variables 
+
+`PORT`: Port on which the backend would start.
+
+`MONGODB_URI`: MongoDB URI to connect to the database.
+
+`JWT_SECRET`: JWT Key required for hashing confidential information and maitaining privacy of users
+
+`CLOUDINARY_CLOUD_NAME`: Credentials for cloudinary for file uploads
+
+`CLOUDINARY_API_KEY`: Credentials for cloudinary for file uploads
+
+`CLOUDINARY_API_SECRET`: Credentials for cloudinary for file uploads
+
+`CLIENT_URL`: URL at which the frontend application is hosted
+
+### Frontend env file
+- Create a .env file in the frontend folder and add the following .env variables
+
+`VITE_SERVER`: Server URL for APIs
+
+
+## Installation and Running the Application
 
 To clone and run this application, you'll need [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en) (which comes with [npm](https://www.npmjs.com/)) installed on your computer 
+
+### Installation
+1. Clone this repository
+```bash
+git clone https://github.com/krishnathakkar29/Chat-Application.git
+```
+
+2. Install dependencies for backend
+```bash
+cd frontend
+npm install
+```
+
+3. Install dependencies for backend
+```bash
+cd backend
+npm install
+```
+
+### Running the application
+1. Start the backend server
+```
+cd backend
+npm run dev
+```
+
+2. Start the frontend application
+```
+cd frontend
+npm run dev
+```
+
+
