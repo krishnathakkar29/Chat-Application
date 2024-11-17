@@ -27,7 +27,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     credentials: true,
-    origin: ["http://localhost:5173", process.env.CLIENT_URL],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -49,7 +49,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["*", process.env.CLIENT_URL],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
