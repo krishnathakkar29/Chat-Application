@@ -14,6 +14,7 @@ const ChatList = ({
   ],
   handleDeleteChat,
 }) => {
+  console.log(newMessagesAlert);
   return (
     <Stack
       width={w}

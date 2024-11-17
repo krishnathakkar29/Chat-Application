@@ -11,7 +11,10 @@ import {
   NEW_REQUEST,
   REFETCH_CHATS,
 } from "@/constants/events";
-import { incrementNotification } from "@/redux/reducers/chatSlice";
+import {
+  incrementNotification,
+  setNewMessagesAlert,
+} from "@/redux/reducers/chatSlice";
 import { useNavigate } from "react-router-dom";
 import { useErrors } from "@/hooks/useErrors";
 import { getSocket } from "@/socket/Socket";
@@ -20,6 +23,7 @@ function AppLayout({ children, user, chatId }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isMobile } = useSelector((state) => state.misc);
+  const { newMessagesAlert } = useSelector((state) => state.chat);
   const socket = getSocket();
   const { notificationCount } = useSelector((state) => state.chat);
 
@@ -28,7 +32,6 @@ function AppLayout({ children, user, chatId }) {
   const { data, isError, error, isLoading, refetch } = useMyChatsQuery();
 
   const handleDeleteChat = () => {};
-  const newMessagesAlert = () => {};
 
   const newRequestListener = useCallback(() => {
     dispatch(incrementNotification());
@@ -39,9 +42,18 @@ function AppLayout({ children, user, chatId }) {
     navigate("/");
   }, [refetch, navigate]);
 
+  const newMessageAlertListener = useCallback(
+    (data) => {
+      if (data.chatId === chatId) return;
+      dispatch(setNewMessagesAlert(data));
+    },
+    [chatId]
+  );
+
   const eventHandlers = {
     [NEW_REQUEST]: newRequestListener,
     [REFETCH_CHATS]: refetchListener,
+    [NEW_MESSAGE_ALERT]: newMessageAlertListener,
   };
 
   useSocketEvents(socket, eventHandlers);
@@ -85,6 +97,7 @@ function AppLayout({ children, user, chatId }) {
                 chatId={chatId}
                 chats={data?.chats}
                 handleDeleteChat={handleDeleteChat}
+                newMessagesAlert={newMessagesAlert}
               />
             </>
           )}

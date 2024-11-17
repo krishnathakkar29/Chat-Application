@@ -19,6 +19,7 @@ import {
 import { Skeleton } from "@mui/material";
 import { TypingLoader } from "@/components/layout/Loader";
 import { setIAmTyping, setUserTyping } from "@/redux/reducers/typingSlice";
+import { removeNewMessagesAlert } from "@/redux/reducers/chatSlice";
 
 function Chat() {
   const params = useParams();
@@ -72,6 +73,7 @@ function Chat() {
   };
 
   useEffect(() => {
+    dispatch(removeNewMessagesAlert(chatId));
     return () => {
       setMessages([]);
       setMessage("");

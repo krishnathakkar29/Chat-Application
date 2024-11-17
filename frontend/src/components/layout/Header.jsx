@@ -18,6 +18,7 @@ import {
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setIsMobile,
   setIsNewGroup,
   setIsNotification,
   setIsSearch,
@@ -62,7 +63,7 @@ function Header({ refetch }) {
   );
   const { notificationCount } = useSelector((state) => state.chat);
 
-  const handleMobile = () => {};
+  const handleMobile = () => dispatch(setIsMobile(true));
 
   const openSearch = () => {
     dispatch(setIsSearch(!isSearch));
